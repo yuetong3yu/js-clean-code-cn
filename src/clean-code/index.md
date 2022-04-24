@@ -15,3 +15,19 @@ const yyyymmdstr = moment().format('YYYY/MM/DD')
 ```js
 const currentDate = moment().format('YYYY/MM/DD')
 ```
+
+### 相同类型的变量使用同一个单词
+
+:-1: Bad:
+
+```js
+getUserInfo()
+getClientData()
+getCustomerRecord()
+```
+
+:+1: Good:
+
+```js
+getUser()
+```
