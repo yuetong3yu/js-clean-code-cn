@@ -36,19 +36,23 @@ module.exports = {
     lastUpdated: false,
     nav: [
       {
+        text: '规范',
+        link: '/clean-code/',
+      },
+      {
         text: 'Github',
         link: 'https://github.com/yuetong3yu/js-clean-code-cn',
       },
     ],
-    sidebar: {
-      '/guide/': [
-        {
-          title: 'Guide',
-          collapsable: false,
-          children: ['', 'using-vue'],
-        },
-      ],
-    },
+    // sidebar: {
+    //   '/guide/': [
+    //     {
+    //       title: 'Guide',
+    //       collapsable: false,
+    //       children: ['', 'using-vue'],
+    //     },
+    //   ],
+    // },
   },
 
   /**
