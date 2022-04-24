@@ -1,0 +1,19 @@
+{
+  "name": "js-clean-code-cn",
+  "version": "0.0.1",
+  "description": "JavaScript 整洁代码规范",
+  "main": "index.js",
+  "authors": {
+    "name": "yuetong3yu",
+    "email": "yuetong3yu@gmail.com"
+  },
+  "repository": "/js-clean-code-cn",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  }
+}
