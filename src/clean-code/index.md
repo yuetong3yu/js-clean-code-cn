@@ -10,7 +10,7 @@
 const yyyymmdstr = moment().format('YYYY/MM/DD')
 ```
 
-:+1:
+:+1: Good:
 
 ```js
 const currentDate = moment().format('YYYY/MM/DD')
