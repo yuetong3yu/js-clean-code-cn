@@ -1,7 +1,7 @@
 {
   "name": "js-clean-code-cn",
   "version": "0.0.1",
-  "description": "JavaScript 整洁代码规范",
+  "description": "🎉 JavaScript 中好的代码实践和规范，可以当作 Code Review 的自查手册",
   "main": "index.js",
   "authors": {
     "name": "yuetong3yu",
