@@ -50,3 +50,112 @@ setTimeout(blastOff, 86400000)
 const MILLSECONDSS_PER_DAY = 60 * 60 * 24 * 1000 // 86400000
 setTimeout(blastOff, MILLSECONDSS_PER_DAY)
 ```
+
+### 使用清晰明了的变量
+
+:-1: Bad:
+
+```js
+const address = 'One Infinite Loop, Cupertino 95014'
+const cityZipCodeRegex = /^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/
+saveCityZipCode(
+  address.match(cityZipCodeRegex)[1],
+  address.match(cityZipCodeRegex)[2]
+)
+```
+
+:+1: Good:
+
+```js
+const address = 'One Infinite Loop, Cupertino 95014'
+const cityZipCodeRegex = /^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/
+const [_, city, zipCode] = address.match(cityZipCodeRegex) || []
+saveCityZipCode(city, zipCode)
+```
+
+### 尽量避免约定俗成
+
+清晰明确总比约定俗成要好。
+
+:-1: Bad:
+
+```js
+const locations = ['Austin', 'New York', 'San Francisco']
+locations.forEach((l) => {
+  doStuff()
+  doSomeOtherStuff()
+  // ...
+  // ...
+  // ...
+  // 等等，`l` 是什么来着？
+  dispatch(l)
+})
+```
+
+:+1: Good:
+
+```js
+const locations = ['Austin', 'New York', 'San Francisco']
+locations.forEach((location) => {
+  doStuff()
+  doSomeOtherStuff()
+  // ...
+  // ...
+  // ...
+  dispatch(location)
+})
+```
+
+### 如无必要，勿增实体（不要添加不必要的信息）
+
+如果你的类名或者对象名已经告诉了你上下文信息，你就不需要在你的变量名中再重复了。
+
+:-1: Bad:
+
+```js
+const Car = {
+  carMake: 'Honda',
+  carModel: 'Accord',
+  carColor: 'Blue',
+}
+
+function paintCar(car, color) {
+  car.carColor = color
+}
+```
+
+:+1: Good:
+
+```js
+const Car = {
+  make: 'Honda',
+  model: 'Accord',
+  color: 'Blue',
+}
+
+function paintCar(car, color) {
+  car.color = color
+}
+```
+
+### 在函数中使用参数默认值来替代双竖线运算符
+
+首先，参数默认值要比双竖线运算符来得更加整洁。
+:warning: 但要注意的是，参数默认值只有在 `undefined` 的时候才会生效，而 `||` 运算符在值为 `falsy` 的时候都会生效。
+
+:-1: Bad:
+
+```js
+function doSomething(name) {
+  const name = name || 'Yuetong Yu'
+  // ...
+}
+```
+
+:+1: Good:
+
+```js
+function doSomething(name = 'Yuetong Yu') {
+  // ...
+}
+```
