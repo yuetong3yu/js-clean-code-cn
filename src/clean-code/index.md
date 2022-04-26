@@ -256,3 +256,73 @@ function addMonthToDate(month, date) {
 const date = new Date()
 addMonthToDate(1, date)
 ```
+
+### 函数抽象应该保持一层
+
+当你的函数超过一层的抽象行为的时候，通常来说，你这个函数做的事情就太多了。把它们拆开来，提高可用性，以便更好的进行测试。
+
+:-1: Bad:
+
+```js
+function parseBetterJSAlternative(code) {
+  const REGEXES = [
+    // ...
+  ]
+
+  const statements = code.split(' ')
+  const tokens = []
+  REGEXES.forEach((REGEX) => {
+    statements.forEach((statement) => {
+      // ...
+    })
+  })
+
+  const ast = []
+  tokens.forEach((token) => {
+    // lex...
+  })
+
+  ast.forEach((node) => {
+    // parse...
+  })
+}
+```
+
+:+1: Good:
+
+```js
+function parseBetterJSAlternative(code) {
+  const tokens = tokenize(code)
+  const syntaxTree = parse(tokens)
+  syntaxTree.forEach((node) => {
+    // parse...
+  })
+}
+
+function tokenize(code) {
+  const REGEXES = [
+    // ...
+  ]
+
+  const statements = code.split(' ')
+  const tokens = []
+  REGEXES.forEach((REGEX) => {
+    statements.forEach((statement) => {
+      tokens.push(/* ... */)
+    })
+  })
+
+  return tokens
+}
+
+function parse(tokens) {
+  const syntaxTree = []
+  tokens.forEach((token) => {
+    syntaxTree.push(/* ... */)
+  })
+
+  return syntaxTree
+}
+```
+
+### 减少重复的代码
