@@ -36,8 +36,12 @@ module.exports = {
     lastUpdated: false,
     nav: [
       {
-        text: '规范',
-        link: '/clean-code/',
+        text: '变量规范',
+        link: '/variables/',
+      },
+      {
+        text: '函数规范',
+        link: '/functions/',
       },
       {
         text: 'Github',
