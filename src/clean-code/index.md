@@ -199,3 +199,35 @@ createMenu({
   cancellable: true,
 })
 ```
+
+### 一个函数只做一件事情
+
+这几乎是你看到目前为止在软件工程中最重要的一条规范了。当一个函数做的事情超过一样的时候，他们会变得更难组合、测试等等。但如果你把保持一个函数只做一件事情的原则，那么这些函数就会变得更容易重构、更容易组合在一起去完成一个新的需求，并且你的代码也会变得更加整洁。
+
+就算在这整个《JS 整洁代码规范》中，你只践行了这一条原则，那么你也已经领先了其他开发者很多了。
+
+:-1: Bad:
+
+```js
+function emailClients(clients) {
+  clients.forEach(client => {
+    const clientRecord = database.lookup(client);
+    if (clientRecord.isActive()) {
+      email(client);
+    }
+  });
+}
+```
+
+:+1: Good:
+
+```js
+function emailActiveClients(clients) {
+  clients.filter(isActiveClient).forEach(email);
+}
+
+function isActiveClient(client) {
+  const clientRecord = database.lookup(client);
+  return clientRecord.isActive();
+}
+```
