@@ -164,3 +164,72 @@ function parse(tokens) {
 ```
 
 ### 减少重复的代码
+
+请尽量避免重复的代码，因为重复的代码意味着当你需要更改一点逻辑的时候，需要去改动多个地方，这很痛苦。
+
+举个例子想象一下：如果你是一家餐厅的老板，你需要管理各种物料的库存：土豆、番茄、洋葱等等... 如果这个时候你有多个列表来保存这些库存信息，那么每次更新库存的时候，你都要去改多个表格，这真的肥肠痛苦。但如果你只有一个列表的话，那么变更起来，就放心多了。
+
+通常来说，你将同样逻辑的代码写多次，是因为在多个地方这些实现会有一点点的不一样，并不是完全的一样的。在这种情况下，你会把相似的代码写多次。那如果在这种情况下你想去移除相同的代码的时候，你就要抽象出一个更高层次的方法/类/模块来根据不同的情况做不同的事情了。
+
+使用正确的抽象方法是至关重要的，这就是为什么你需要去遵循 SOILD 原则在[类](/classes/)这个板块。错误的抽象方法比重复的代码更糟糕，所以你一定要小心！所以必须要说的是，如果你掌握了正确的抽象方法，请遵循。不要重复你自己，否则你就会想上面的老板一样，不停的去寻找多个地方进行修改。
+
+:-1: Bad:
+
+```js
+function showDeveloperList(developers) {
+  developers.forEach((developer) => {
+    const expectedSalary = developer.calculateExpectedSalary()
+    const experience = developer.getExperience()
+    const githubLink = developer.getGithubLink()
+    const data = {
+      expectedSalary,
+      experience,
+      githubLink,
+    }
+
+    render(data)
+  })
+}
+
+function showManagerList(managers) {
+  managers.forEach((manager) => {
+    const expectedSalary = manager.calculateExpectedSalary()
+    const experience = manager.getExperience()
+    const portfolio = manager.getMBAProjects()
+    const data = {
+      expectedSalary,
+      experience,
+      portfolio,
+    }
+
+    render(data)
+  })
+}
+```
+
+:+1: Good:
+
+```js
+function showEmployeeList(employees) {
+  employees.forEach((employee) => {
+    const expectedSalary = employee.calculateExpectedSalary()
+    const experience = employee.getExperience()
+
+    const data = {
+      expectedSalary,
+      experience,
+    }
+
+    switch (employee.type) {
+      case 'manager':
+        data.portfolio = employee.getMBAProjects()
+        break
+      case 'developer':
+        data.githubLink = employee.getGithubLink()
+        break
+    }
+
+    render(data)
+  })
+}
+```

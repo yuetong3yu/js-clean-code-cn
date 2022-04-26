@@ -48,15 +48,6 @@ module.exports = {
         link: 'https://github.com/yuetong3yu/js-clean-code-cn',
       },
     ],
-    // sidebar: {
-    //   '/guide/': [
-    //     {
-    //       title: 'Guide',
-    //       collapsable: false,
-    //       children: ['', 'using-vue'],
-    //     },
-    //   ],
-    // },
   },
 
   /**
