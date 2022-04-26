@@ -210,12 +210,12 @@ createMenu({
 
 ```js
 function emailClients(clients) {
-  clients.forEach(client => {
-    const clientRecord = database.lookup(client);
+  clients.forEach((client) => {
+    const clientRecord = database.lookup(client)
     if (clientRecord.isActive()) {
-      email(client);
+      email(client)
     }
-  });
+  })
 }
 ```
 
@@ -223,11 +223,36 @@ function emailClients(clients) {
 
 ```js
 function emailActiveClients(clients) {
-  clients.filter(isActiveClient).forEach(email);
+  clients.filter(isActiveClient).forEach(email)
 }
 
 function isActiveClient(client) {
-  const clientRecord = database.lookup(client);
-  return clientRecord.isActive();
+  const clientRecord = database.lookup(client)
+  return clientRecord.isActive()
 }
+```
+
+### 函数命名应该直白告诉它干了什么
+
+:-1: Bad:
+
+```js
+function addToDate(date, month) {
+  // ...
+}
+
+const date = new Date()
+
+// 光从函数名称里很难看出来，这个日期到底是 add 了个什么？
+addToDate(date, 1)
+```
+
+:+1: Good:
+
+```js
+function addMonthToDate(month, date) {
+  // ...
+}
+const date = new Date()
+addMonthToDate(1, date)
 ```
