@@ -233,3 +233,136 @@ function showEmployeeList(employees) {
   })
 }
 ```
+
+### 用 Object.assign 来给对象属性设置默认值
+
+:-1: Bad:
+
+```js
+const menuConfig = {
+  title: null,
+  body: 'Bar',
+  buttonText: null,
+  cancellable: true,
+}
+
+function createMenu(config) {
+  config.title = config.title || 'Foo'
+  config.body = config.body || 'Bar'
+  config.buttonText = config.buttonText || 'Baz'
+  config.cancellable =
+    config.cancellable !== undefined ? config.cancellable : true
+}
+
+createMenu(menuConfig)
+```
+
+:+1: Good:
+
+```js
+const menuConfig = {
+  title: 'Order',
+  // User did not include 'body' key
+  buttonText: 'Send',
+  cancellable: true,
+}
+
+function createMenu(config) {
+  let finalConfig = Object.assign(
+    {
+      title: 'Foo',
+      body: 'Bar',
+      buttonText: 'Baz',
+      cancellable: true,
+    },
+    config
+  )
+  return finalConfig
+  // config now equals: {title: "Order", body: "Bar", buttonText: "Send", cancellable: true}
+  // ...
+}
+
+createMenu(menuConfig)
+```
+
+### 不要把 boolean 判断作为函数的参数
+
+当你把 boolean 作为函数的参数的时候，你就告诉了调用你这个函数的用户，你这个函数做的事情超过了一件事。
+
+因此，如果这个条件指向的两条不太一样的实现路径，那么请把它们拆成两个函数。
+
+:-1: Bad:
+
+```js
+function createFile(name, temp) {
+  if (temp) {
+    fs.create(`./temp/${name}`)
+  } else {
+    fs.create(name)
+  }
+}
+```
+
+:+1: Good:
+
+```js
+function createFile(name) {
+  fs.create(name)
+}
+
+function createTempFile(name) {
+  createFile(`./temp/${name}`)
+}
+```
+
+### 避免副作用（一）
+
+函数的副作用是值，除了接受一些值返回一些值之外，还做了其他的事情。这些其他的事情可以是：修改了一个文件、修改一些全局变量又或者说把你账上的钱打给了一个陌生人。
+
+现在，假如说你需要有一个副作用函数来做一些事情。像我们上面举的例子，你可能需要修改一个文件。你需要做的就是，把这些副作用尽量收敛在一个函数里做这件事情（比如修改文件）。不要拆分成几个函数或类来做同一件副作用的事情（比如修改同一个文件）。保持一个服务做一件事，有且只有一个。
+
+核心思想就是：尽量避免一些常见的陷阱。例如：无序地在对象之间共享一些状态、使用一些能被任何东西修改的可变数据类型、对副作用的操作并不集中。如果你能兼顾到这些，你会很开心地发现，你比绝大多数程序员都要优秀。
+
+:-1: Bad:
+
+```js
+// 下面这个函数直接修改了全部变量的引用。
+// 如果我们后面还有用到这个 name 的方法，会发现 name 不再是 string 了，这可能导致一些问题。
+let name = 'Ryan McDermott'
+
+function splitIntoFirstAndLastName() {
+  name = name.split(' ')
+}
+
+splitIntoFirstAndLastName()
+
+console.log(name) // ['Ryan', 'McDermott'];
+```
+
+:+1: Good:
+
+```js
+function splitIntoFirstAndLastName(name) {
+  return name.split(' ')
+}
+
+const name = 'Ryan McDermott'
+const newName = splitIntoFirstAndLastName(name)
+
+console.log(name) // 'Ryan McDermott';
+console.log(newName) // ['Ryan', 'McDermott'];
+```
+
+### 避免副作用（二）
+
+在 JavaScript 中，有一些值是不可被改变的(immutable)而有一些值是可变的数据(mutable)。 例如对象喝数组就是两种可变的数据类型，当我们把它们当作参数传递给函数的时候，要特别的小心。因为 JavaScript 中的函数很容易一不小心就修改了对象中属性的值或者数组中的元素，这就很容器引起 BUG。
+
+假如说我们有一个方法，接受一个用来代表购物车列表的数组。如果我们这个函数直接去变更了这个数组的内容，比方说往购物车中增加一个商品。如果此时有另一个函数用到了这个购物车的数组，那么这个函数中处理的数组也会随之改变。这种现象有可能是好事（更加省心），也有可能是坏事，我们来看一个坏的情况：
+
+用户点击了“买单”这个选项，我们的网页此时应该发起一次网络请求，将购物车的数组发给服务端进行处理。但此时又因为网络问题，我们的请求失败了，不得不重新发起请求。又进一步说，这发起重新请求之前，用户又点击了“增加到购物车”这个按钮。那么这个时候我们的网页就会把最新的购物车列表发给服务端进行结账！但事实上用户并不想对后加入的这个商品进行买单，因为他是在点击买单之后再加入的商品。
+
+一个好的实践是：我们写的 `addItemToCart` 方法接受一个购物车的数组，然后返回一个新增了商品后的新数组。这就能保证我们的方法返回的是一个新的数组，那么依旧使用旧数组的“买单”方法就不会收到这个 `addItemtoCart` 的影响。
+
+两条额外要说的东西：
+
+1. 也许在你的工作中，你真的遇到了需要修改原引用对象的需求。那么那是可以的，只要你保证尽量避免一些额外的副作用即可。但你也要知道，跳出我们这个规范的实践中，这种场景真的十分罕见。绝大多数的函数都可以避免产生副作用（保持纯函数）。
