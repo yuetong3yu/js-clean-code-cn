@@ -366,3 +366,21 @@ console.log(newName) // ['Ryan', 'McDermott'];
 两条额外要说的东西：
 
 1. 也许在你的工作中，你真的遇到了需要修改原引用对象的需求。那么那是可以的，只要你保证尽量避免一些额外的副作用即可。但你也要知道，跳出我们这个规范的实践中，这种场景真的十分罕见。绝大多数的函数都可以避免产生副作用（保持纯函数）。
+
+2. 克隆一个很大的对象是一件很浪费性能的事情。但好在，在我们的实践当中，我们可以借用很多很棒的三方库来完成这件事情（例如 [immutable-js](https://facebook.github.io/immutable-js/)）。这些库能让我们很自然地操作对象和数组，并产生全新的引用对象，而且还不会像手动克隆对象数字一样造成内存紧张的问题。
+
+:-1: Bad:
+
+```js
+const addItemToCart = (cart, item) => {
+  cart.push({ item, date: Date.now() })
+}
+```
+
+:+1: Good:
+
+```js
+const addItemToCart = (cart, item) => {
+  return [...cart, { item, date: Date.now() }]
+}
+```
