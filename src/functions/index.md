@@ -384,3 +384,29 @@ const addItemToCart = (cart, item) => {
   return [...cart, { item, date: Date.now() }]
 }
 ```
+
+### 不要写全局函数
+
+污染全局函数在 JavaScript 中是一个不好的实践，因为你有可能会使第三方的库中的一些方法失效，这就有可能导致你的产品在生产环境下挂掉。
+
+举个例子：假如你现在想拓展一个数组的方法 diff，这个方法用来比对两个数组之间的不同。你可以在 `Array.prototype` 上来写这个方法，但这样做的话有可能会使得一个做了同样事情的第三方库的这个 `Array.prototype.diff` 失效（因为你覆盖了它）。这就是为什么我们说，使用 ES2015/ES6 的继承类的方法比直接书写全局方法要好得多的原因。
+
+:-1: Bad:
+
+```js
+Array.prototype.diff = function diff(comparisonArray) {
+  const hash = new Set(comparisonArray)
+  return this.filter((elem) => !hash.has(elem))
+}
+```
+
+:+1: Good:
+
+```js
+class SuperArray extends Array {
+  diff(comparisonArray) {
+    const hash = new Set(comparisonArray)
+    return this.filter((elem) => !hash.has(elem))
+  }
+}
+```
