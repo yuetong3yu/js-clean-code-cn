@@ -420,27 +420,27 @@ JavaScript 不像 Haskell 一样是天生是一个函数式语言，但 JS 有�
 ```js
 const programmerOutput = [
   {
-    name: "Uncle Bobby",
-    linesOfCode: 500
+    name: 'Uncle Bobby',
+    linesOfCode: 500,
   },
   {
-    name: "Suzie Q",
-    linesOfCode: 1500
+    name: 'Suzie Q',
+    linesOfCode: 1500,
   },
   {
-    name: "Jimmy Gosling",
-    linesOfCode: 150
+    name: 'Jimmy Gosling',
+    linesOfCode: 150,
   },
   {
-    name: "Gracie Hopper",
-    linesOfCode: 1000
-  }
-];
+    name: 'Gracie Hopper',
+    linesOfCode: 1000,
+  },
+]
 
-let totalOutput = 0;
+let totalOutput = 0
 
 for (let i = 0; i < programmerOutput.length; i++) {
-  totalOutput += programmerOutput[i].linesOfCode;
+  totalOutput += programmerOutput[i].linesOfCode
 }
 ```
 
@@ -449,25 +449,46 @@ for (let i = 0; i < programmerOutput.length; i++) {
 ```js
 const programmerOutput = [
   {
-    name: "Uncle Bobby",
-    linesOfCode: 500
+    name: 'Uncle Bobby',
+    linesOfCode: 500,
   },
   {
-    name: "Suzie Q",
-    linesOfCode: 1500
+    name: 'Suzie Q',
+    linesOfCode: 1500,
   },
   {
-    name: "Jimmy Gosling",
-    linesOfCode: 150
+    name: 'Jimmy Gosling',
+    linesOfCode: 150,
   },
   {
-    name: "Gracie Hopper",
-    linesOfCode: 1000
-  }
-];
+    name: 'Gracie Hopper',
+    linesOfCode: 1000,
+  },
+]
 
 const totalOutput = programmerOutput.reduce(
   (totalLines, output) => totalLines + output.linesOfCode,
   0
-);
+)
+```
+
+### 封装条件判断
+
+:-1: Bad:
+
+```js
+if (fsm.state === 'fetching' && isEmpty(node)) {
+  // ...
+}
+```
+
+:+1: Good:
+
+```js
+function shouldShowSpinner(fsm, node) {
+  return fsm.state === 'fetching' && isEmpty(node)
+}
+if (shouldShowSpinner(fsm, node)) {
+  // ...
+}
 ```
