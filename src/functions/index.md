@@ -410,3 +410,64 @@ class SuperArray extends Array {
   }
 }
 ```
+
+### 最好使用函数式编程替代声明式编程
+
+JavaScript 不像 Haskell 一样是天生是一个函数式语言，但 JS 有它自己实现函数式编程的方法。函数式地编程能让代码看起来更整洁、更有助于测试，所以，尽量使自己学习并实践这种编程范式吧。
+
+:-1: Bad:
+
+```js
+const programmerOutput = [
+  {
+    name: "Uncle Bobby",
+    linesOfCode: 500
+  },
+  {
+    name: "Suzie Q",
+    linesOfCode: 1500
+  },
+  {
+    name: "Jimmy Gosling",
+    linesOfCode: 150
+  },
+  {
+    name: "Gracie Hopper",
+    linesOfCode: 1000
+  }
+];
+
+let totalOutput = 0;
+
+for (let i = 0; i < programmerOutput.length; i++) {
+  totalOutput += programmerOutput[i].linesOfCode;
+}
+```
+
+:+1: Good:
+
+```js
+const programmerOutput = [
+  {
+    name: "Uncle Bobby",
+    linesOfCode: 500
+  },
+  {
+    name: "Suzie Q",
+    linesOfCode: 1500
+  },
+  {
+    name: "Jimmy Gosling",
+    linesOfCode: 150
+  },
+  {
+    name: "Gracie Hopper",
+    linesOfCode: 1000
+  }
+];
+
+const totalOutput = programmerOutput.reduce(
+  (totalLines, output) => totalLines + output.linesOfCode,
+  0
+);
+```
