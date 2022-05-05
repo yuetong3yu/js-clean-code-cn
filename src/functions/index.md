@@ -518,3 +518,56 @@ if (isDOMNodePresent(node)) {
   // ...
 }
 ```
+
+### 避免条件判断
+
+这看起来是个不可能完成的规范，大多数人初次听到这个建议都会下意识的说：“我怎么可能不用 if 就完成程序的编写呢？”。其实，这个问题的答案是，我们可以通过多态来实现我们的条件判断。那么接下来人们又会有另一个问题：“我为什么要这么做呢？这明显麻烦很多。”那么这个问题的答案就要回溯我们之前一条铁律：一个良好的函数应该只做一件事情。这就意味着，如果我们的函数中出现了条件判断的话，我们的函数干得事情必然超过了一件。
+
+请记住，一个函数只做一件事。
+
+:-1: Bad:
+
+```js
+class Airplane {
+  // ...
+  getCruisingAltitude() {
+    switch (this.type) {
+      case '777':
+        return this.getMaxAltitude() - this.getPassengerCount()
+      case 'Air Force One':
+        return this.getMaxAltitude()
+      case 'Cessna':
+        return this.getMaxAltitude() - this.getFuelExpenditure()
+    }
+  }
+}
+```
+
+:+1: Good:
+
+```js
+class Airplane {
+  // ...
+}
+
+class Boeing777 extends Airplane {
+  // ...
+  getCruisingAltitude() {
+    return this.getMaxAltitude() - this.getPassengerCount()
+  }
+}
+
+class AirForceOne extends Airplane {
+  // ...
+  getCruisingAltitude() {
+    return this.getMaxAltitude()
+  }
+}
+
+class Cessna extends Airplane {
+  // ...
+  getCruisingAltitude() {
+    return this.getMaxAltitude() - this.getFuelExpenditure()
+  }
+}
+```
