@@ -492,3 +492,29 @@ if (shouldShowSpinner(fsm, node)) {
   // ...
 }
 ```
+
+### 避免否定判断
+
+:-1: Bad:
+
+```js
+function isDOMNodeNotPresent(node) {
+  // ...
+}
+
+if (!isDOMNodeNotPresent(node)) {
+  // ...
+}
+```
+
+:+1: Good:
+
+```js
+function isDOMNodePresent(node) {
+  // ...
+}
+
+if (isDOMNodePresent(node)) {
+  // ...
+}
+```
