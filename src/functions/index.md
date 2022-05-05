@@ -571,3 +571,27 @@ class Cessna extends Airplane {
   }
 }
 ```
+
+### 避免类型检查（一）
+
+JavaScript 是一个动态类型的语言，这意味着我们的函数参数可以是任何类型。有时候你会为这种特性感到苦恼，并且会尝试在函数中进行类型判断。现实中我们可以有很多方法来避免做这些类型判断，第一件我们可以考虑的事情是是否可以采用更抽象更通用的方法？
+
+:-1: Bad:
+
+```js
+function travelToTexas(vehicle) {
+  if (vehicle instanceof Bicycle) {
+    vehicle.pedal(this.currentLocation, new Location("texas"));
+  } else if (vehicle instanceof Car) {
+    vehicle.drive(this.currentLocation, new Location("texas"));
+  }
+}
+```
+
+:+1: Good:
+
+```js
+function travelToTexas(vehicle) {
+  vehicle.move(this.currentLocation, new Location("texas"));
+}
+```
