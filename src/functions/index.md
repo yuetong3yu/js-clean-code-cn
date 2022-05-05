@@ -581,9 +581,9 @@ JavaScript 是一个动态类型的语言，这意味着我们的函数参数可
 ```js
 function travelToTexas(vehicle) {
   if (vehicle instanceof Bicycle) {
-    vehicle.pedal(this.currentLocation, new Location("texas"));
+    vehicle.pedal(this.currentLocation, new Location('texas'))
   } else if (vehicle instanceof Car) {
-    vehicle.drive(this.currentLocation, new Location("texas"));
+    vehicle.drive(this.currentLocation, new Location('texas'))
   }
 }
 ```
@@ -592,6 +592,39 @@ function travelToTexas(vehicle) {
 
 ```js
 function travelToTexas(vehicle) {
-  vehicle.move(this.currentLocation, new Location("texas"));
+  vehicle.move(this.currentLocation, new Location('texas'))
 }
 ```
+
+### 避免类型检查（二）
+
+如果你在函数内需要和原始类型打交道，而且这个时候不能用多态来避免类型条件判断，与此同时你又需要进行类型判断的话，那么你应该考虑使用 TypeScript。这是一个绝佳的 JavaScript 替代品，它为 JavaScript 提供了静态类型语法。
+
+在 JS 中，我们手动创建类型检查的问题在于：我们为了得到所谓的“类型安全”需要写太多太多冗余的类型检查代码，而这些代码又恰巧具有非常低的可读性，也大大地降低了我们代码的可维护性。
+
+请保持你的代码整洁、干净、高维护性。否则，你可以考虑使用 TypeScript。
+
+:-1: Bad:
+
+```js
+function combine(val1, val2) {
+  if (
+    (typeof val1 === 'number' && typeof val2 === 'number') ||
+    (typeof val1 === 'string' && typeof val2 === 'string')
+  ) {
+    return val1 + val2
+  }
+
+  throw new Error('Must be of type String or Number')
+}
+```
+
+:+1: Good:
+
+```ts
+function combine(v1: number | string, v2: number | string) {
+  return v1 + v2
+}
+```
+
+### 不要过度优化
