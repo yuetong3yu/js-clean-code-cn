@@ -628,3 +628,25 @@ function combine(v1: number | string, v2: number | string) {
 ```
 
 ### 不要过度优化
+
+现代浏览器其实在运行时后台已经做了非常多的优化了，在大多数时候，如果你在优化你的代码，那么意味着很可能你在浪费时间。
+
+[这些东西](https://github.com/petkaantonov/bluebird/wiki/Optimization-killers)是浏览器呈待优化的点，你可以在编写程序的时候注意一下，直到这些被修复。
+
+:-1: Bad:
+
+```js
+// 在老版本的浏览器中，每次循环都会计算新的 list.length 的值，因此我们需要用一个变量来将它保存下来。
+// 但在现代浏览器当中，已经会默认使用缓存了。
+for (let i = 0, len = list.length; i < len; i++) {
+  // ...
+}
+```
+
+:+1: Good:
+
+```js
+for (let i = 0; i < list.length; i++) {
+  // ...
+}
+```
