@@ -650,3 +650,33 @@ for (let i = 0; i < list.length; i++) {
   // ...
 }
 ```
+
+### 移除无用代码（Dead Code）
+
+Dead Code 就跟重复代码一样糟糕，完全找不到任何一个不去删除它的理由。如果我们发现有任何的函数没有被使用到的，就应该移除它，如果我们后面仍然需要用到它，还可以在 git 历史中将它找回来！
+
+:-1: Bad:
+
+```js
+function oldRequestModule(url) {
+  // ...
+}
+
+function newRequestModule(url) {
+  // ...
+}
+
+const req = newRequestModule
+inventoryTracker('apples', req, 'www.inventory-awesome.io')
+```
+
+:+1: Good:
+
+```js
+function newRequestModule(url) {
+  // ...
+}
+
+const req = newRequestModule
+inventoryTracker('apples', req, 'www.inventory-awesome.io')
+```
