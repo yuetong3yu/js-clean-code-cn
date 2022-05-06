@@ -44,6 +44,10 @@ module.exports = {
         link: '/functions/',
       },
       {
+        text: '对象与数据结构规范',
+        link: '/objects-and-data-structures/',
+      },
+      {
         text: 'Github',
         link: 'https://github.com/yuetong3yu/js-clean-code-cn',
       },
