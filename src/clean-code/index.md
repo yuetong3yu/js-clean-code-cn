@@ -5,3 +5,5 @@
 [函数规范](/functions/)
 
 [对象与数据结构规范](/objects-and-data-structures/)
+
+[类规范](/classes/)

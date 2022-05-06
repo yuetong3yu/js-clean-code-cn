@@ -48,6 +48,10 @@ module.exports = {
         link: '/objects-and-data-structures/',
       },
       {
+        text: '类规范',
+        link: '/classes/',
+      },
+      {
         text: 'Github',
         link: 'https://github.com/yuetong3yu/js-clean-code-cn',
       },
