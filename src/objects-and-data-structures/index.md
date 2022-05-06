@@ -54,3 +54,41 @@ function makeBankAccount() {
 const account = makeBankAccount()
 account.setBalance(100)
 ```
+
+### 让对象有私有属性
+
+我们也可以通过闭包来完成这件事情（在 ES5 及以下）
+
+:-1: Bad:
+
+```js
+const Employee = function (name) {
+  this.name = name
+}
+
+Employee.prototype.getName = function getName() {
+  return this.name
+}
+
+const employee = new Employee('John Doe')
+console.log(`Employee name: ${employee.getName()}`) // Employee name: John Doe
+delete employee.name
+console.log(`Employee name: ${employee.getName()}`) // Employee name: undefined
+```
+
+:+1: Good:
+
+```js
+function makeEmployee(name) {
+  return {
+    getName() {
+      return name
+    },
+  }
+}
+
+const employee = makeEmployee('John Doe')
+console.log(`Employee name: ${employee.getName()}`) // Employee name: John Doe
+delete employee.name
+console.log(`Employee name: ${employee.getName()}`) // Employee name: John Doe
+```
