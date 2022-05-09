@@ -9,3 +9,5 @@
 [类规范](/classes/)
 
 [SOLID 原则](/solid/)
+
+[SOLID 原则](/testing/)

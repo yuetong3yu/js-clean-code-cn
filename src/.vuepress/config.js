@@ -56,6 +56,10 @@ module.exports = {
         link: '/solid/',
       },
       {
+        text: '测试规范',
+        link: '/testing/',
+      },
+      {
         text: 'Github',
         link: 'https://github.com/yuetong3yu/js-clean-code-cn',
       },
