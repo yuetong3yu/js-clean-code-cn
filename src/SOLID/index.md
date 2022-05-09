@@ -324,4 +324,81 @@ const $ = new DOMTraverser({
 
 实践这条原则的好处是可以减少两个模块之间的耦合程度，耦合对开发体验来说是非常差的时间，因为它会让你的代码变得很难重构。
 
-就像我们之前说过的，JS 中没有接口这种东西，所以这些都是隐晦的概念。
+就像我们之前说过的，JS 中没有接口这种东西，所以这些都是隐晦的概念。这就意味着说，一个方法或者属性从会从一个类/对象暴露给另一个类/对象。在下面这个例子里：我们任何通过 `InventoryTracker` 实现的请求模块，都会隐式包含 `requestItems` 这个方法。
+
+:-1: Bad:
+
+```js
+class InventoryRequester {
+  constructor() {
+    this.REQ_METHODS = ["HTTP"];
+  }
+
+  requestItem(item) {
+    // ...
+  }
+}
+
+class InventoryTracker {
+  constructor(items) {
+    this.items = items;
+
+    // 不好：我们创建了一个具体请求实现的依赖。我们应该只需要 requestItems 依赖一个请求方法 `request`
+    this.requester = new InventoryRequester();
+  }
+
+  requestItems() {
+    this.items.forEach(item => {
+      this.requester.requestItem(item);
+    });
+  }
+}
+
+const inventoryTracker = new InventoryTracker(["apples", "bananas"]);
+inventoryTracker.requestItems();
+```
+
+:+1: Good:
+
+```js
+class InventoryTracker {
+  constructor(items, requester) {
+    this.items = items;
+    this.requester = requester;
+  }
+
+  requestItems() {
+    this.items.forEach(item => {
+      this.requester.requestItem(item);
+    });
+  }
+}
+
+class InventoryRequesterV1 {
+  constructor() {
+    this.REQ_METHODS = ["HTTP"];
+  }
+
+  requestItem(item) {
+    // ...
+  }
+}
+
+class InventoryRequesterV2 {
+  constructor() {
+    this.REQ_METHODS = ["WS"];
+  }
+
+  requestItem(item) {
+    // ...
+  }
+}
+// 通过在外部创建或者注入我们的依赖，我们可以很容易的使用 WebSockets 来替换我们原来的请求模块。
+const inventoryTracker = new InventoryTracker(
+  ["apples", "bananas"],
+  new InventoryRequesterV2()
+);
+inventoryTracker.requestItems();
+```
+
+
