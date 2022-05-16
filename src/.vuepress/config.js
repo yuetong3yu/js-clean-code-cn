@@ -60,6 +60,10 @@ module.exports = {
         link: '/testing/',
       },
       {
+        text: '异步规范',
+        link: '/concurrency/',
+      },
+      {
         text: 'Github',
         link: 'https://github.com/yuetong3yu/js-clean-code-cn',
       },
