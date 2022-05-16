@@ -45,3 +45,46 @@ get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin')
     console.error(err)
   })
 ```
+
+### 能用 Async/Await 就不要用 Promise
+
+Promise 对于回调函数来说已经是一个更清晰的替代品了， `async/await` 甚至是一个更清晰的替代品，我们愿意称之为异步的终极解决方案（像写同步代码一样写异步代码）。
+
+你仅仅只需要在函数定义的时候在开头加一个 `async` 修饰符，就能在函数体那使用 `await` 来标记后面的代码是异步代码，仅仅当它结束的时候才会继续后面的执行，否则函数将会被挂起。
+
+:-1: Bad:
+
+```js
+import { get } from 'request-promise'
+import { writeFile } from 'fs-extra'
+
+get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin')
+  .then((body) => {
+    return writeFile('article.html', body)
+  })
+  .then(() => {
+    console.log('File written')
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+```
+
+:+1: Good:
+
+```js
+import { get } from 'request-promise'
+import { writeFile } from 'fs-extra'
+
+async function getCleanCodeArticle() {
+  try {
+    const body = await get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin')
+    await writeFile('article.html', body)
+    console.log('File written')
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+getCleanCodeArticle()
+```
