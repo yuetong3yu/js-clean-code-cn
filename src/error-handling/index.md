@@ -7,3 +7,29 @@
 如果你捕获了一个错误但却没有干实事的话，那你很可能会在以后忽略这个 BUG 最终导致问题的出现。我们经常做的一件事就是把捕获到的错误直接干脆地打印(`console.log`)到控制台当中，这也会导致你的错误会被淹没在海量的控制台当中最终找不到原因。
 
 既然当你写下 `try/catch` 这行代码的时候，你就知道你包起来的这段代码有可能会出现错误。那么就意味着你“应该”对可能出现的错误有应对的策略。所以，你应该有相应的处理代码而不是简单的打印出来。
+
+:-1: Bad:
+
+```js
+try {
+  functionThatMightThrow()
+} catch (error) {
+  console.log(error)
+}
+```
+
+:+1: Good:
+
+```js
+try {
+  functionThatMightThrow()
+} catch (error) {
+  // 你可以这样做，比用 console.log 会好一些
+  console.error(error)
+  // 另一种选择
+  notifyUserOfError(error)
+  // 再另一种选择
+  reportErrorToService(error)
+  // 或者全部都做
+}
+```
