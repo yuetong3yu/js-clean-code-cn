@@ -33,3 +33,37 @@ try {
   // 或者全部都做
 }
 ```
+
+### 不要忽视 Promise 中的 Reject
+
+跟 `try/catch` 同理。
+
+:-1: Bad:
+
+```js
+getdata()
+  .then((data) => {
+    functionThatMightThrow(data)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
+```
+
+:+1: Good:
+
+```js
+getdata()
+  .then((data) => {
+    functionThatMightThrow(data)
+  })
+  .catch((error) => {
+    // 你可以这样做，比用 console.log 会好一些
+    console.error(error)
+    // 另一种选择
+    notifyUserOfError(error)
+    // 再另一种选择
+    reportErrorToService(error)
+    // 或者全部都做
+  })
+```
