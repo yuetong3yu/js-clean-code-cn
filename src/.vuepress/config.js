@@ -64,6 +64,10 @@ module.exports = {
         link: '/concurrency/',
       },
       {
+        text: '编码风格',
+        link: '/formatting/',
+      },
+      {
         text: 'Github',
         link: 'https://github.com/yuetong3yu/js-clean-code-cn',
       },
