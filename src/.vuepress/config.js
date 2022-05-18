@@ -68,6 +68,10 @@ module.exports = {
         link: '/formatting/',
       },
       {
+        text: '注释规范',
+        link: '/comment/',
+      },
+      {
         text: 'Github',
         link: 'https://github.com/yuetong3yu/js-clean-code-cn',
       },
