@@ -41,3 +41,87 @@ function restoreDatabase() {}
 class Animal {}
 class Alpaca {}
 ```
+
+### 函数调用者和被调用的应该放在一起
+
+我们审查代码的时候，绝大多数人倾向于从上往下的顺序进行浏览（像看报纸一样）。所以理想的情况下，我们在一个函数中调用另一个函数的时候，这个被调用的函数应在就定义在调用者的旁边，这样我们可以很容易地找到它。
+
+:-1: Bad:
+
+```js
+class PerformanceReview {
+  constructor(employee) {
+    this.employee = employee
+  }
+
+  lookupPeers() {
+    return db.lookup(this.employee, 'peers')
+  }
+
+  lookupManager() {
+    return db.lookup(this.employee, 'manager')
+  }
+
+  getPeerReviews() {
+    const peers = this.lookupPeers()
+    // ...
+  }
+
+  perfReview() {
+    this.getPeerReviews()
+    this.getManagerReview()
+    this.getSelfReview()
+  }
+
+  getManagerReview() {
+    const manager = this.lookupManager()
+  }
+
+  getSelfReview() {
+    // ...
+  }
+}
+
+const review = new PerformanceReview(employee)
+review.perfReview()
+```
+
+:+1: Good:
+
+```js
+class PerformanceReview {
+  constructor(employee) {
+    this.employee = employee
+  }
+
+  perfReview() {
+    this.getPeerReviews()
+    this.getManagerReview()
+    this.getSelfReview()
+  }
+
+  getPeerReviews() {
+    const peers = this.lookupPeers()
+    // ...
+  }
+
+  lookupPeers() {
+    return db.lookup(this.employee, 'peers')
+  }
+
+  getManagerReview() {
+    const manager = this.lookupManager()
+  }
+
+  lookupManager() {
+    return db.lookup(this.employee, 'manager')
+  }
+
+  getSelfReview() {
+    // ...
+  }
+}
+
+const review = new PerformanceReview(employee)
+review.perfReview()
+```
